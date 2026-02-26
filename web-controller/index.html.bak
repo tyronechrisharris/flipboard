@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vista Board Controller</title>
-    <link rel="manifest" href="manifest.json">
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -70,15 +69,6 @@
         }
         .success { color: #03dac6; }
         .error { color: #cf6679; }
-        .warning {
-            color: #ffb74d;
-            font-size: 0.8rem;
-            margin-top: 1rem;
-            text-align: center;
-            border: 1px solid #ffb74d;
-            padding: 0.5rem;
-            border-radius: 4px;
-        }
     </style>
 </head>
 <body>
@@ -94,28 +84,13 @@
         </div>
         <button onclick="sendMessage()">Update Display</button>
         <div id="status" class="status"></div>
-
-        <div class="warning" id="mixedContentWarning" style="display: none;">
-            If using HTTPS, you must enable "Mixed Content" (Shield icon in address bar) to communicate with the local TV IP.
-        </div>
     </div>
 
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Service Worker registered', reg))
-                    .catch(err => console.log('Service Worker registration failed', err));
-            });
-        }
-
         window.onload = function() {
             const savedIp = localStorage.getItem('vistaBoardIp');
             if (savedIp) {
                 document.getElementById('ipAddress').value = savedIp;
-            }
-            if (location.protocol === 'https:') {
-                document.getElementById('mixedContentWarning').style.display = 'block';
             }
         };
 
@@ -131,6 +106,7 @@
 
             localStorage.setItem('vistaBoardIp', ipInput);
 
+            // Construct full URL with port 8080 if not present
             let url = ipInput;
             if (!url.startsWith('http')) {
                 url = 'http://' + url;
@@ -158,11 +134,7 @@
                 }
             })
             .catch(error => {
-                if (error.message.includes('Failed to fetch') && location.protocol === 'https:') {
-                    showStatus('Blocked by browser. Click the shield icon in address bar to allow Mixed Content.', 'error');
-                } else {
-                    showStatus('Connection Failed: ' + error.message, 'error');
-                }
+                showStatus('Connection Failed: ' + error.message, 'error');
                 console.error('Error:', error);
             });
         }
@@ -174,7 +146,7 @@
             setTimeout(() => {
                 div.textContent = '';
                 div.className = 'status';
-            }, 8000);
+            }, 5000);
         }
     </script>
 </body>
