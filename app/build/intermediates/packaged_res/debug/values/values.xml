@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Split Flap Simulator</string>
-    <style name="Theme.SplitFlapSimulator" parent="android:Theme.Material.Light.NoActionBar"/>
-</resources>
