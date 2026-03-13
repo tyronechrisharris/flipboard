@@ -11,12 +11,13 @@
         android:required="false" />
     <uses-feature
         android:name="android.software.leanback"
-        android:required="true" />
+        android:required="false" />
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:banner="@drawable/banner"
         android:theme="@style/Theme.SplitFlapSimulator">
 
         <activity
@@ -25,6 +26,7 @@
             android:theme="@style/Theme.SplitFlapSimulator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
